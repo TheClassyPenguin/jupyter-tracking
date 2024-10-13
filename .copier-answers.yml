@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.3.5
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: salvador19marti@gmail.com
+author_name: Skymont
+has_binder: true
+has_settings: true
+kind: frontend
+labextension_name: jupyter_tracking
+project_short_description: A JupyterLab extension that tracks gui interactions.
+python_name: jupyter_tracking
+repository: https://github.com/TheClassyPenguin/jupyter-tracking
+test: true
+

@@ -1,0 +1,38 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "jupyter_tracking",
+  "description": "jupyter_tracking settings.",
+  "type": "object",
+"properties": {
+    "enableTracking": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable or disable tracking of global events."
+    },
+    "includedEvents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "focus",
+        "click",
+        "close",
+        "cut",
+        "copy",
+        "paste",
+        "dblclick",
+        "drag",
+        "drop",
+        "input",
+        "stalled",
+        "submit",
+        "toggle",
+        "error",
+        "unload"
+      ],
+      "description": "List of events to track when interactions occur."
+    }
+  },
+  "additionalProperties": false
+}
