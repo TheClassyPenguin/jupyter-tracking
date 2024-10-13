@@ -12,12 +12,20 @@ let eventLogger: EventLogger | null = null;
  * Helper function to load settings or fall back to defaults.
  * If no settings are found, tracking is disabled and no events are listened to.
  */
-function loadSettings(settings: ISettingRegistry.ISettings): { includedEvents: string[], enableTracking: boolean } {
-  const includedEvents = settings.get('includedEvents').composite as string[] || [];
-  const enableTracking = settings.get('enableTracking').composite as boolean || false; // Disable by default if not found
-  
+function loadSettings(settings: ISettingRegistry.ISettings): {
+  includedEvents: string[];
+  enableTracking: boolean;
+} {
+  const includedEvents =
+    (settings.get('includedEvents').composite as string[]) || [];
+  const enableTracking =
+    (settings.get('enableTracking').composite as boolean) || false; // Disable by default if not found
+
   // If no included events or tracking setting is present, disable tracking
-  if (!settings.get('includedEvents').user && !settings.get('enableTracking').user) {
+  if (
+    !settings.get('includedEvents').user &&
+    !settings.get('enableTracking').user
+  ) {
     return { includedEvents: [], enableTracking: false };
   }
 
@@ -27,15 +35,21 @@ function loadSettings(settings: ISettingRegistry.ISettings): { includedEvents: s
 /**
  * Helper function to update event listeners based on the toggle and included events.
  */
-function updateEventListeners(enableTracking: boolean, includedEvents: string[]): void {
-  console.log('Updating global event listeners with included events:', includedEvents);
-  
+function updateEventListeners(
+  enableTracking: boolean,
+  includedEvents: string[]
+): void {
+  console.log(
+    'Updating global event listeners with included events:',
+    includedEvents
+  );
+
   // Remove existing event listeners
   if (eventLogger) {
     eventLogger.detachEventListeners();
     eventLogger = null;
   }
-  
+
   // If tracking is enabled, attach new event listeners
   if (enableTracking) {
     eventLogger = new EventLogger(includedEvents);
@@ -47,7 +61,6 @@ function updateEventListeners(enableTracking: boolean, includedEvents: string[])
   }
 }
 
-
 /**
  * Initialization data for the jupyter_tracking extension.
  */
@@ -56,7 +69,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
   description: 'A JupyterLab extension that tracks gui interactions.',
   autoStart: true,
   optional: [ISettingRegistry],
-  activate: (app: JupyterFrontEnd, settingRegistry: ISettingRegistry | null) => {
+  activate: (
+    app: JupyterFrontEnd,
+    settingRegistry: ISettingRegistry | null
+  ) => {
     console.log('JupyterLab extension jupyter-tracking is activated!');
 
     let includedEvents: string[] = [];
@@ -81,7 +97,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
           });
         })
         .catch(reason => {
-          console.error('Failed to load settings for jupyter-tracking.', reason);
+          console.error(
+            'Failed to load settings for jupyter-tracking.',
+            reason
+          );
         });
     } else {
       // If no settings are found, don't attach any listeners and disable tracking

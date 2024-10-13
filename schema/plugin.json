@@ -3,7 +3,7 @@
   "title": "jupyter_tracking",
   "description": "jupyter_tracking settings.",
   "type": "object",
-"properties": {
+  "properties": {
     "enableTracking": {
       "type": "boolean",
       "default": true,
