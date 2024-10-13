@@ -73,7 +73,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     app: JupyterFrontEnd,
     settingRegistry: ISettingRegistry | null
   ) => {
-    console.log('JupyterLab extension jupyter-tracking is activated!');
+    console.log('JupyterLab extension jupyter_tracking is activated!');
 
     let includedEvents: string[] = [];
     let enableTracking = false; // Disable tracking by default if settings are missing
@@ -83,7 +83,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       settingRegistry
         .load(plugin.id)
         .then(settings => {
-          console.log('jupyter-tracking settings loaded:', settings.composite);
+          console.log('jupyter_tracking settings loaded:', settings.composite);
           console.log('The JupyterLab main application:', app);
 
           // Load the included events and enableTracking toggle from the settings
@@ -98,7 +98,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         })
         .catch(reason => {
           console.error(
-            'Failed to load settings for jupyter-tracking.',
+            'Failed to load settings for jupyter_tracking.',
             reason
           );
         });

@@ -7,9 +7,9 @@
         "jupyterlab",
         "jupyterlab-extension"
     ],
-    "homepage": "https://github.com/TheClassyPenguin/jupyter-tracking",
+    "homepage": "https://github.com/TheClassyPenguin/jupyter_tracking",
     "bugs": {
-        "url": "https://github.com/TheClassyPenguin/jupyter-tracking/issues"
+        "url": "https://github.com/TheClassyPenguin/jupyter_tracking/issues"
     },
     "license": "BSD-3-Clause",
     "author": {
@@ -27,7 +27,7 @@
     "style": "style/index.css",
     "repository": {
         "type": "git",
-        "url": "https://github.com/TheClassyPenguin/jupyter-tracking.git"
+        "url": "https://github.com/TheClassyPenguin/jupyter_tracking.git"
     },
     "scripts": {
         "build": "jlpm build:lib && jlpm build:labextension:dev",

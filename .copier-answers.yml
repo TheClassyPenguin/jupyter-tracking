@@ -9,5 +9,5 @@ kind: frontend
 labextension_name: jupyter_tracking
 project_short_description: A JupyterLab extension that tracks gui interactions.
 python_name: jupyter_tracking
-repository: https://github.com/TheClassyPenguin/jupyter-tracking
+repository: https://github.com/TheClassyPenguin/jupyter_tracking
 test: true

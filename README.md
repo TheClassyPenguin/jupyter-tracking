@@ -1,7 +1,7 @@
 # jupyter_tracking
 
-[![Github Actions Status](https://github.com/TheClassyPenguin/jupyter-tracking/workflows/Build/badge.svg)](https://github.com/TheClassyPenguin/jupyter-tracking/actions/workflows/build.yml)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TheClassyPenguin/jupyter-tracking/main?urlpath=lab)
+[![Github Actions Status](https://github.com/TheClassyPenguin/jupyter_tracking/workflows/Build/badge.svg)](https://github.com/TheClassyPenguin/jupyter_tracking/actions/workflows/build.yml)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TheClassyPenguin/jupyter_tracking/main?urlpath=lab)
 
 A JupyterLab extension that tracks gui interactions.
 
