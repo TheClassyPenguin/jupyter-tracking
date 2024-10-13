@@ -1,3 +1,5 @@
+// index.ts
+
 import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
@@ -15,21 +17,20 @@ let eventLogger: EventLogger | null = null;
 function loadSettings(settings: ISettingRegistry.ISettings): {
   includedEvents: string[];
   enableTracking: boolean;
+  loggingMethod: string;
 } {
   const includedEvents =
     (settings.get('includedEvents').composite as string[]) || [];
   const enableTracking =
-    (settings.get('enableTracking').composite as boolean) || false; // Disable by default if not found
+    (settings.get('enableTracking').composite as boolean) || false;
+  const loggingMethod =
+    (settings.get('loggingMethod').composite as string) || 'local';
 
-  // If no included events or tracking setting is present, disable tracking
-  if (
-    !settings.get('includedEvents').user &&
-    !settings.get('enableTracking').user
-  ) {
-    return { includedEvents: [], enableTracking: false };
-  }
-
-  return { includedEvents, enableTracking };
+  return {
+    includedEvents,
+    enableTracking,
+    loggingMethod
+  };
 }
 
 /**
@@ -37,7 +38,8 @@ function loadSettings(settings: ISettingRegistry.ISettings): {
  */
 function updateEventListeners(
   enableTracking: boolean,
-  includedEvents: string[]
+  includedEvents: string[],
+  loggingMethod: string
 ): void {
   console.log(
     'Updating global event listeners with included events:',
@@ -52,7 +54,7 @@ function updateEventListeners(
 
   // If tracking is enabled, attach new event listeners
   if (enableTracking) {
-    eventLogger = new EventLogger(includedEvents);
+    eventLogger = new EventLogger(includedEvents, loggingMethod);
     eventLogger.init().catch(error => {
       console.error('Failed to initialize event logger:', error);
     });
@@ -66,7 +68,7 @@ function updateEventListeners(
  */
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyter_tracking:plugin',
-  description: 'A JupyterLab extension that tracks gui interactions.',
+  description: 'A JupyterLab extension that tracks GUI interactions.',
   autoStart: true,
   optional: [ISettingRegistry],
   activate: (
@@ -76,7 +78,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
     console.log('JupyterLab extension jupyter_tracking is activated!');
 
     let includedEvents: string[] = [];
-    let enableTracking = false; // Disable tracking by default if settings are missing
+    let enableTracking = false;
+    let loggingMethod = 'local';
 
     // Load initial settings and set up listeners for changes
     if (settingRegistry) {
@@ -86,14 +89,16 @@ const plugin: JupyterFrontEndPlugin<void> = {
           console.log('jupyter_tracking settings loaded:', settings.composite);
           console.log('The JupyterLab main application:', app);
 
-          // Load the included events and enableTracking toggle from the settings
-          ({ includedEvents, enableTracking } = loadSettings(settings));
-          updateEventListeners(enableTracking, includedEvents);
+          // Load settings
+          ({ includedEvents, enableTracking, loggingMethod } =
+            loadSettings(settings));
+          updateEventListeners(enableTracking, includedEvents, loggingMethod);
 
-          // Listen for settings changes and update includedEvents and enableTracking dynamically
+          // Listen for settings changes
           settings.changed.connect(() => {
-            ({ includedEvents, enableTracking } = loadSettings(settings));
-            updateEventListeners(enableTracking, includedEvents);
+            ({ includedEvents, enableTracking, loggingMethod } =
+              loadSettings(settings));
+            updateEventListeners(enableTracking, includedEvents, loggingMethod);
           });
         })
         .catch(reason => {
@@ -103,7 +108,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
           );
         });
     } else {
-      // If no settings are found, don't attach any listeners and disable tracking
       console.log('No settings found, tracking is disabled.');
     }
   }

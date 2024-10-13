@@ -5,12 +5,14 @@ class EventLogger {
   activeEventTypes: string[];
   userId: string;
   initialized: boolean;
+  loggingMethod: string;
 
-  constructor(includedEvents: string[] = []) {
+  constructor(includedEvents: string[] = [], loggingMethod: string = 'local') {
     this.includedEvents = includedEvents;
     this.activeEventTypes = [];
     this.userId = 'unknown-user';
     this.initialized = false;
+    this.loggingMethod = loggingMethod;
   }
 
   /**
@@ -54,7 +56,7 @@ class EventLogger {
       console.warn('Could not retrieve user ID from JupyterHub:', error);
       await this.logInteraction(undefined, {
         type: 'IDENTIFICATION_ERROR',
-        details: String(error) // Changed from error.toString() to String(error)
+        details: String(error)
       });
     }
 
@@ -117,7 +119,7 @@ class EventLogger {
   };
 
   /**
-   * Logs the interaction or error to localStorage.
+   * Logs the interaction or error using the selected logging method.
    * @param interaction The interaction details, if any.
    * @param error The error details, if any.
    */
@@ -140,10 +142,39 @@ class EventLogger {
       error: error
     };
     console.log('Log entry:', logEntry);
-    // Store logs in localStorage
-    const logs = JSON.parse(localStorage.getItem('user_interactions') || '[]');
-    logs.push(logEntry);
-    localStorage.setItem('user_interactions', JSON.stringify(logs));
+
+    if (this.loggingMethod === 'server') {
+      // Send log entry to the server
+      try {
+        const response = await fetch('/api/log-interaction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(logEntry),
+          credentials: 'same-origin'
+        });
+        if (!response.ok) {
+          console.error(
+            'Failed to send log entry to server:',
+            response.statusText
+          );
+          // Optionally handle retries or fallbacks here
+        }
+      } catch (err) {
+        console.error('Error sending log entry to server:', err);
+        // Optionally handle retries or fallbacks here
+      }
+    } else if (this.loggingMethod === 'local') {
+      // Store logs in localStorage
+      const logs = JSON.parse(
+        localStorage.getItem('user_interactions') || '[]'
+      );
+      logs.push(logEntry);
+      localStorage.setItem('user_interactions', JSON.stringify(logs));
+    } else {
+      console.warn('Invalid logging method specified:', this.loggingMethod);
+    }
   }
 }
 

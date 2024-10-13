@@ -9,6 +9,12 @@
       "default": true,
       "description": "Enable or disable tracking of global events."
     },
+    "loggingMethod": {
+      "type": "string",
+      "enum": ["local", "server"],
+      "default": "local",
+      "description": "Choose the logging method: 'local' or 'server'."
+    },
     "includedEvents": {
       "type": "array",
       "items": {
